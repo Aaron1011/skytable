@@ -38,6 +38,7 @@ jobs:
       - name: Run Tests
         run: |
           git fetch --unshallow
+          rustup target add aarch64-apple-darwin
 
           git checkout bb19d024ea1e5e0c9a3d75a9ee58ff03c70c7e5d
           cargo build --verbose --target aarch64-apple-darwin
