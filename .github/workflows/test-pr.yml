@@ -43,7 +43,6 @@ jobs:
           CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
 
           git checkout e9662ef8b6da853a58253ffb71c8be28f295482d
-          touch libsky/src/lib.rs
           CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
         env:
           RUST_BACKTRACE: 1
