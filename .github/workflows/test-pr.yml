@@ -36,6 +36,8 @@ jobs:
         with:
           install: "HTML::Entities"
       - name: Run Tests
-        run: make test
+        run: |
+          chmod +x crash.sh
+          ./crash.sh
         env:
           RUST_BACKTRACE: 1

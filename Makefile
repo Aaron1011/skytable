@@ -1,7 +1,7 @@
 export ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 ADDITIONAL_SOFTWARE=
 # (DEF) Either prepare --target triple-x-y OR have an empty value
-TARGET_ARG =
+TARGET_ARG = --target aarch64-apple-darwin
 ifneq ($(origin TARGET),undefined)
 TARGET_ARG +=--target ${TARGET}
 ifeq ($(TARGET),x86_64-unknown-linux-musl)
