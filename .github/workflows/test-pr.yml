@@ -39,10 +39,10 @@ jobs:
           export SDKROOT=$(xcrun -sdk macosx11.0 --show-sdk-path)
           export MACOSX_DEPLOYMENT_TARGET=$(xcrun -sdk macosx11.0 --show-sdk-platform-version)
 
-          git checkout bb19d024ea1e5e0c9a3d75a9ee58ff03c70c7e5d
+          git checkout 11e0cf842628685036265a6164295dd18d543978
           CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
 
-          git checkout 11e0cf842628685036265a6164295dd18d543978
+          git checkout e9662ef8b6da853a58253ffb71c8be28f295482d
           touch libsky/src/lib.rs
           CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
         env:
