@@ -19,7 +19,7 @@ ifeq ($(ADDITIONAL_SOFTWARE),)
 ADDITIONAL_SOFTWARE += echo "info: No additional software required for this target"
 endif
 
-BUILD_VERBOSE = cargo build --verbose $(TARGET_ARG)
+BUILD_VERBOSE = cargo build --verbose --target aarch64-apple-darwin
 
 # (DEF) Create empty commands
 STOP_SERVER =
@@ -52,10 +52,10 @@ BUILD_SERVER_COMMAND += -p skyd
 RELEASE_SERVER_COMMAND =
 RELEASE_SERVER_COMMAND += $(BUILD_SERVER_COMMAND)
 RELEASE_SERVER_COMMAND += --release
-RELEASE_COMMAND += cargo build --release $(TARGET_ARG)
+RELEASE_COMMAND += cargo build --release  --target aarch64-apple-darwin
 BUILD_COMMAND += $(BUILD_VERBOSE)
-TEST_COMMAND += cargo test $(TARGET_ARG)
-START_COMMAND += cargo run $(TARGET_ARG) -p skyd
+TEST_COMMAND += cargo test  --target aarch64-apple-darwin
+START_COMMAND += cargo run  --target aarch64-apple-darwin -p skyd
 START_COMMAND_RELEASE =
 START_COMMAND_RELEASE += ${START_COMMAND}
 START_COMMAND_RELEASE += --release
@@ -115,7 +115,7 @@ release: .pre
 	@echo "===================================================================="
 	@echo "Building all binaries in release mode (optimized)"
 	@echo "===================================================================="
-	cargo build --release --verbose $(TARGET_ARG)
+	cargo build --release --verbose --target aarch64-apple-darwin
 .release-server:
 	@echo "===================================================================="
 	@echo "Building server binary in release mode (optimized)"
@@ -132,7 +132,7 @@ test: .build-server
 	@echo "===================================================================="
 	@echo "Running all tests"
 	@echo "===================================================================="
-	cargo test $(TARGET_ARG)
+	cargo test --target aarch64-apple-darwin
 	@$(STOP_SERVER)
 	@sleep 2
 	@rm -f .sky_pid cert.pem key.pem
@@ -143,7 +143,7 @@ stress: .release-server
 	@${START_COMMAND_RELEASE}
 # sleep for 5s to let the server start up
 	@sleep 5
-	cargo run $(TARGET_ARG) --release -p stress-test
+	cargo run --target aarch64-apple-darwin --release -p stress-test
 	@echo "===================================================================="
 	@echo "Stress testing (all)"
 	@echo "===================================================================="
