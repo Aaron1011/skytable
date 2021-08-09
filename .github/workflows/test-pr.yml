@@ -10,9 +10,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [macos-stable]
+        build: [macos-latest]
         include:
-          - build: macos-stable
+          - build: macos-latest
             os: macos-latest
             rust: stable
 
@@ -39,11 +39,12 @@ jobs:
         run: |
           git fetch --unshallow
           rustup target add aarch64-apple-darwin
+          sudo xcode-select -s "/Applications/Xcode_12.2.app"
 
           git checkout bb19d024ea1e5e0c9a3d75a9ee58ff03c70c7e5d
-          cargo build --verbose --target aarch64-apple-darwin
+          CARGO_INCREMENTAL=1 cargo build --verbose --target aarch64-apple-darwin
 
           git checkout 11e0cf842628685036265a6164295dd18d543978
-          cargo build --verbose --target aarch64-apple-darwin
+          CARGO_INCREMENTAL=1 cargo build --verbose --target aarch64-apple-darwin
         env:
           RUST_BACKTRACE: 1
