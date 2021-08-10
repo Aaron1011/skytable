@@ -10,16 +10,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [linux-stable, macos-stable, windows-stable]
+        build: [macos-latest]
         include:
-          - build: linux-stable
-            os: ubuntu-latest
-            rust: stable
-          - build: macos-stable
+          - build: macos-latest
             os: macos-latest
-            rust: stable
-          - build: windows-stable
-            os: windows-latest
             rust: stable
 
     steps:
@@ -37,11 +31,27 @@ jobs:
           rustup update ${{ matrix.rust }} --no-self-update
           rustup default ${{ matrix.rust }}
         if: env.BUILD == 'true'
-      - name: Install perl modules
-        uses: perl-actions/install-with-cpanm@v1
-        with:
-          install: "HTML::Entities"
       - name: Run Tests
-        run: make test
+        run: |
+          git fetch --unshallow
+          rustup target add aarch64-apple-darwin
+
+          mkdir /tmp/my_cargo
+          export CARGO_TARGET_DIR=/tmp/my_cargo
+
+          sudo xcode-select -s "/Applications/Xcode_12.2.app"
+          export SDKROOT=$(xcrun -sdk macosx11.0 --show-sdk-path)
+          export MACOSX_DEPLOYMENT_TARGET=$(xcrun -sdk macosx11.0 --show-sdk-platform-version)
+
+          git checkout 11e0cf842628685036265a6164295dd18d543978
+          CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
+
+          touch server/build.rs
+          touch sky-macros/src/lib.rs
+          touch libsky/src/lib.rs
+          touch server/src/main.rs
+
+          git checkout e9662ef8b6da853a58253ffb71c8be28f295482d
+          CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
         env:
           RUST_BACKTRACE: 1
