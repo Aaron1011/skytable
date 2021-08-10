@@ -46,6 +46,11 @@ jobs:
           git checkout 11e0cf842628685036265a6164295dd18d543978
           CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
 
+          touch server/build.rs
+          touch sky-macros/src/lib.rs
+          touch libsky/src/lib.rs
+          tocuh server/src/main.rs
+
           git checkout e9662ef8b6da853a58253ffb71c8be28f295482d
           CARGO_INCREMENTAL=1 cargo build -v --target aarch64-apple-darwin
         env:
